@@ -5,213 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Special Birthday for a Special Didi</title>
 
+<!-- Preload key images for a faster, more polished first impression -->
+<link rel="preload" as="image" href="images/didi-1.jpg">
+<link rel="preload" as="image" href="images/didi-2.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --ease: cubic-bezier(0.25,1,0.5,1);
-  --glass-bg: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.1),
-    rgba(255,255,255,0.05)
+:root{
+  --ease:cubic-bezier(.25,1,.5,1);
+  --glass-grad:linear-gradient(135deg,
+      rgba(255,255,255,.18),
+      rgba(255,255,255,.05)
   );
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #2a2a2a, #0f0f0f);
-  color: #f5f5f5;
-  scroll-behavior: smooth;
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#0b0b0b;
+  color:#f5f5f5;
+  overflow-x:hidden;
 }
 
 /* ================= SECTIONS ================= */
-.story-section {
-  min-height: 100vh;
-  padding: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.story-section{
+  min-height:100vh;
+  padding:1.4rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
 }
 
-.bg-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  z-index: -2;
-  transform: scale(1.15);
-  transition: transform 7s ease-out;
+.bg-image{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  z-index:-3;
+  transform:scale(1.08);
+  transition:transform 3.5s ease-out; /* Slightly faster zoom */
+  will-change:transform;
 }
-.story-section.visible .bg-image {
-  transform: scale(1);
-}
+.story-section.visible .bg-image{ transform:scale(1); }
 
-.story-section::after {
-  content: '';
-  position: absolute;
-  inset: 0;
+.story-section::after{
+  content:"";
+  position:absolute;
+  inset:0;
   background:
-    radial-gradient(circle at top, rgba(255,105,180,0.1), transparent 70%),
-    linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.75));
-  z-index: -1;
+    radial-gradient(circle at top, rgba(255,120,200,.18), transparent 65%),
+    linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.8));
+  z-index:-2;
 }
 
 /* ================= HERO ================= */
-#hero .bg-image {
-  background-image: url('images/didi-1.jpg');
-}
+#hero .bg-image{ background-image:url("images/didi-1.jpg"); }
 
-.hero-content {
-  opacity: 0;
-  transition: opacity 1.2s ease 0.4s;
+.hero-content>*{
+  opacity:0;
+  transform:translateY(25px);
+  transition:all 1s var(--ease);
+  will-change: transform, opacity;
 }
-#hero.visible .hero-content {
-  opacity: 1;
-}
+#hero.visible .hero-content>*{ opacity:1; transform:none; }
+#hero.visible .didi-name{transition-delay:.15s}
+#hero.visible .subtitle{transition-delay:.3s}
 
-/* Polished Staggered Animation for Hero */
-.hero-content > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s var(--ease), transform 1s var(--ease);
+.greeting{
+  font-family:'Dancing Script',cursive;
+  font-size:2.4em;
+  background:linear-gradient(90deg,#ffd700,#ffb347);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
-#hero.visible .hero-content > * {
-  opacity: 1;
-  transform: translateY(0);
+.didi-name{
+  font-family:'Playfair Display',serif;
+  font-size:2.8em;
+  margin:.3em 0;
+  text-shadow:0 8px 30px rgba(0,0,0,.6);
 }
-#hero.visible .didi-name { transition-delay: 0.2s; }
-#hero.visible .subtitle { transition-delay: 0.4s; }
+.subtitle{ opacity:.9; font-size:.95em; }
 
-.greeting {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.3em;
-  color: #ffd700;
-  text-shadow: 0 0 15px rgba(255,215,0,0.3);
+.scroll-hint{
+  position:absolute;
+  bottom:28px;
+  font-size:.85em;
+  opacity:0;
+  animation:float 2.2s infinite 2.5s;
+  transition: opacity 1s ease 2s;
 }
-.didi-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.6em;
-  margin: 0.3em 0;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
-}
-.subtitle {
-  font-size: 0.95em;
-  opacity: 0.85;
-}
+#hero.visible .scroll-hint { opacity: .6; }
+.scroll-hint.hidden { opacity: 0; transition: opacity 0.5s ease; }
 
-.scroll-hint {
-  position: absolute;
-  bottom: 30px;
-  font-size: 0.85em;
-  opacity: 0;
-  animation: bounce 2s infinite 2s;
-  transition: opacity 1s ease 1.5s;
-}
-#hero.visible .scroll-hint { opacity: 0.6; }
-
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(6px)}
 }
 
 /* ================= GLASS CARD ================= */
-.card { min-height: 100vh; }
-#card1 .bg-image { background-image: url('images/didi-2.jpg'); }
-#card2 .bg-image { background-image: url('images/family.jpg'); }
-#card3 .bg-image { background-image: url('images/selfie.jpg'); }
+.card .bg-image{filter:saturate(1.05) brightness(.95)}
+#card1 .bg-image{background-image:url("images/didi-2.jpg")}
+#card2 .bg-image{background-image:url("images/family.jpg")}
+#card3 .bg-image{background-image:url("images/selfie.jpg")}
 
-.glass-box {
-  width: 100%;
-  max-width: 380px;
-  position: relative;
-  border-radius: 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5); /* Refined shadow */
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 1.1s var(--ease);
-  overflow: hidden;
+.glass-box{
+  width:100%;
+  max-width:380px;
+  border-radius:22px;
+  background:var(--glass-grad);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+  opacity:0;
+  transform:translateY(40px) scale(.96);
+  transition:all 1s var(--ease);
+  position:relative;
+  overflow:hidden;
+  transform-style: preserve-3d; /* For tilt effect */
+  will-change: transform, opacity;
 }
-.story-section.visible .glass-box {
-  opacity: 1;
-  transform: translateY(0);
-}
+.story-section.visible .glass-box{ opacity:1; transform:none; }
 
-.glass-box::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -150%;
-  width: 70%; height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.15),
-    transparent
-  );
-  transform: skewX(-30deg);
-  animation: sweep 12s linear infinite; /* Slower, more subtle sweep */
+/* NEW: Aurora Glow Effect */
+.glass-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 105, 180, 0.2), transparent 40%);
+    animation: aurora-glow 15s linear infinite alternate;
+    z-index: -1;
+    transition: opacity 1s ease;
+    opacity: 0;
 }
-@keyframes sweep {
-  from { left: -150%; }
-  to { left: 150%; }
+.story-section.visible .glass-box::after { opacity: 1; }
+@keyframes aurora-glow {
+    0% { --x: 20%; --y: 20%; }
+    100% { --x: 80%; --y: 80%; }
 }
 
-.glass-inner { position: relative; z-index: 1; padding: 1.8rem; }
+.glass-inner{ padding:1.9rem; position:relative; z-index:1; }
 
-/* Polished Staggered Animation for Glass Box Text */
-.glass-inner > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+.glass-inner>*{
+  opacity:0;
+  transform:translateY(18px);
+  transition:all .8s var(--ease);
+  will-change: transform, opacity;
 }
-.story-section.visible .glass-inner > h2 {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.4s;
-}
-.story-section.visible .glass-inner > p {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.6s;
-}
+.story-section.visible .glass-inner>*{ opacity:1; transform:none; }
+.story-section.visible .glass-inner h2{transition-delay:.3s}
+.story-section.visible .glass-inner p{transition-delay:.45s}
 
-h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6em;
-  margin-bottom: 0.6em;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-}
-p {
-  font-size: 0.95em;
-  line-height: 1.6;
-  margin: 0;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-}
+h2{ font-family:'Playfair Display',serif; font-size:1.65em; margin-bottom:.6em; }
+p{ font-size:.95em; line-height:1.65; }
 
 /* ================= FINAL ================= */
-.final-message { background: linear-gradient(135deg, #3a3a3a, #1a1a1a); }
-.final-message .name {
-  margin-top: 40px;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2em;
+.final-message{ background:linear-gradient(135deg,#1a1a1a,#0c0c0c); }
+.final-message-content>*{
+  opacity:0;
+  transform:translateY(20px);
+  transition:all 1s var(--ease);
+  will-change: transform, opacity;
 }
+.story-section.visible .final-message-content>*{ opacity:1; transform:none; }
+.story-section.visible .final-message-content > p { transition-delay: .2s; }
+.story-section.visible .final-message-content > .name { transition-delay: .4s; }
+
+.name{ margin-top:40px; font-family:'Playfair Display',serif; }
 
 /* ================= DESKTOP ================= */
-@media (min-width: 992px) {
-  .glass-box { max-width: 450px; }
-  .didi-name { font-size: 3.5em; }
-  .greeting { font-size: 3em; }
-  .subtitle { font-size: 1.1em; }
+@media(min-width:992px){
+  .glass-box{max-width:450px}
+  .didi-name{font-size:3.6em}
+  .greeting{font-size: 2.8em;}
 }
 </style>
 </head>
@@ -225,7 +197,7 @@ p {
     <h1 class="didi-name">My Dearest Didi</h1>
     <p class="subtitle">Celebrating a new year and your beautiful new beginning.</p>
   </div>
-  <div class="scroll-hint">Swipe ↓</div>
+  <div class="scroll-hint" id="scroll-hint">Swipe ↓</div>
 </section>
 
 <section class="story-section card" id="card1">
@@ -259,7 +231,7 @@ p {
 </section>
 
 <section class="story-section final-message">
-  <div>
+  <div class="final-message-content">
     <h2>This year is extra special.</h2>
     <p>Wishing you peace, joy, and a beautiful journey into motherhood.</p>
     <p class="name">With all my love,<br>Fultu</p>
@@ -267,16 +239,59 @@ p {
 </section>
 
 <script>
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.25 }); // Refined threshold for a better feel
+document.addEventListener("DOMContentLoaded",()=>{
+  // --- Animation Observer ---
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add("visible");
+    });
+  },{threshold:.2,rootMargin:"0px 0px -80px 0px"});
 
-document.querySelectorAll('.story-section').forEach(sec => {
-  observer.observe(sec);
+  document.querySelectorAll(".story-section")
+    .forEach(s=>observer.observe(s));
+    
+  // --- Fade out scroll hint ---
+  const scrollHint = document.getElementById('scroll-hint');
+  window.addEventListener('scroll', () => {
+    scrollHint.classList.add('hidden');
+  }, { once: true });
+  
+  // --- Interactive Tilt Effect ---
+  const cards = document.querySelectorAll('.glass-box');
+
+  const tilt = (e, el) => {
+    const { clientX, clientY } = e;
+    const { top, left, width, height } = el.getBoundingClientRect();
+    const x = ((clientX - left) / width - 0.5) * 2;
+    const y = ((clientY - top) / height - 0.5) * 2;
+    el.style.setProperty('--x', `${x * 15}px`);
+    el.style.setProperty('--y', `${y * 15}px`);
+    el.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
+  };
+
+  const resetTilt = (e) => {
+    e.currentTarget.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+  };
+  
+  // Gyroscope for Mobile
+  const handleOrientation = (e) => {
+    const { beta, gamma } = e; // beta: X-axis, gamma: Y-axis
+    cards.forEach(card => {
+        const y = beta / 45; // Normalize
+        const x = gamma / 45;
+        card.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
+    });
+  };
+
+  if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
+      window.addEventListener('deviceorientation', handleOrientation);
+  } else {
+    // Mouse move for Desktop
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => tilt(e, card));
+        card.addEventListener('mouseleave', resetTilt);
+    });
+  }
 });
 </script>
 
