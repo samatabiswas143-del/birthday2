@@ -15,7 +15,7 @@
             color: #f0f0f0;
         }
 
-        /* --- Hero Section --- */
+        /* --- Hero Section (Works on all devices) --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -23,22 +23,23 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 0 1rem;
             background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/didi-1.jpg');
             background-size: cover;
             background-position: center;
         }
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 4.5em;
+            font-size: 3em; /* Adjusted for better mobile fit */
             margin: 0;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
         }
         .hero p {
-            font-size: 1.5em;
+            font-size: 1.2em; /* Adjusted for better mobile fit */
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
         }
 
-        /* --- The Sticky Layout --- */
+        /* --- Desktop-First Sticky Layout --- */
         .sticky-parent {
             display: grid;
             grid-template-columns: 1fr 1fr; /* 2 equal columns */
@@ -50,10 +51,15 @@
         .sticky-panel {
             position: sticky;
             top: 2rem;
-            height: calc(100vh - 4rem); /* Full height minus padding */
+            height: calc(100vh - 4rem);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Mobile-only image containers are hidden on desktop */
+        .mobile-image {
+            display: none;
         }
 
         .sticky-image {
@@ -64,14 +70,14 @@
             height: 100%;
             object-fit: cover;
             transition: opacity 0.8s ease-in-out;
-            opacity: 0; /* Hidden by default */
+            opacity: 0;
         }
         .sticky-image.active {
-            opacity: 1; /* Made visible by JavaScript */
+            opacity: 1;
         }
         
         .scroll-panel .card {
-            min-height: 100vh; /* Each card takes up the full screen height */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -80,7 +86,6 @@
         }
         
         .card-content {
-            /* The Glassmorphism Effect */
             background: rgba(40, 40, 40, 0.5);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -104,7 +109,7 @@
         
         /* --- Final Message --- */
         .final-message {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -113,6 +118,44 @@
             padding: 2rem;
             background: linear-gradient(to right, #414345, #232526);
         }
+
+        /* -------------------------------------------------- */
+        /* --- THE MAGIC: RESPONSIVE STYLES FOR MOBILE --- */
+        /* -------------------------------------------------- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .hero p { font-size: 1.1em; }
+
+            /* Switch to a single-column layout */
+            .sticky-parent {
+                display: block; /* Remove the grid */
+                padding: 1rem;
+            }
+
+            /* Hide the sticky desktop image panel */
+            .sticky-panel {
+                display: none;
+            }
+
+            .scroll-panel .card {
+                min-height: auto; /* Let cards have natural height */
+                padding: 4rem 0; /* Add space between cards */
+            }
+            
+            /* SHOW the mobile-specific image containers */
+            .mobile-image {
+                display: block;
+                width: 100%;
+                height: 350px;
+                object-fit: cover;
+                border-radius: 15px;
+                margin-bottom: 1.5rem; /* Space between image and text */
+            }
+
+            .card-content h2 { font-size: 2em; }
+            .card-content p { font-size: 1em; }
+        }
+
     </style>
 </head>
 <body>
@@ -123,9 +166,8 @@
     </div>
 
     <div class="sticky-parent">
-        <!-- The Left Panel that sticks -->
+        <!-- The Left Panel that sticks (HIDDEN ON MOBILE) -->
         <div class="sticky-panel">
-            <!-- All images are layered here. JS will make them visible. -->
             <img src="images/didi-2.jpg" id="img-card1" class="sticky-image active" alt="Didi smiling">
             <img src="images/family.jpg" id="img-card2" class="sticky-image" alt="Family together">
             <img src="images/selfie.jpg" id="img-card3" class="sticky-image" alt="Sisters selfie">
@@ -134,18 +176,24 @@
         <!-- The Right Panel that scrolls -->
         <div class="scroll-panel">
             <div class="card" data-image="img-card1">
+                <!-- Image for mobile view -->
+                <img src="images/didi-2.jpg" class="mobile-image" alt="Didi smiling">
                 <div class="card-content">
                     <h2>To The Mother-To-Be</h2>
                     <p>On your birthday, we're celebrating more than just you... we're celebrating the amazing mother you are about to become. You have a special glow that brightens every room.</p>
                 </div>
             </div>
             <div class="card" data-image="img-card2">
+                <!-- Image for mobile view -->
+                <img src="images/family.jpg" class="mobile-image" alt="Family together">
                 <div class="card-content">
                     <h2>Our Family is Growing</h2>
                     <p>Our hearts are so full knowing that our family is growing. We absolutely cannot wait to welcome your little one into this wonderful circle of love.</p>
                 </div>
             </div>
             <div class="card" data-image="img-card3">
+                <!-- Image for mobile view -->
+                <img src="images/selfie.jpg" class="mobile-image" alt="Sisters selfie">
                 <div class="card-content">
                     <h2>A New Adventure</h2>
                     <p>I am so excited to be on this journey with you and to become the proudest Maasi/Aunt in the world! I'll be here for every step, every giggle, and every milestone.</p>
@@ -161,34 +209,37 @@
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cards = document.querySelectorAll('.card');
-        let currentImage = document.querySelector('.sticky-image.active');
+    // This script only needs to run if the screen is wide enough for the sticky effect
+    if (window.matchMedia("(min-width: 769px)").matches) {
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
+            let currentImage = document.querySelector('.sticky-image.active');
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const imageId = entry.target.getAttribute('data-image');
-                        const newImage = document.getElementById(imageId);
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const imageId = entry.target.getAttribute('data-image');
+                            const newImage = document.getElementById(imageId);
 
-                        if (newImage && newImage !== currentImage) {
-                            if (currentImage) {
-                                currentImage.classList.remove('active');
+                            if (newImage && newImage !== currentImage) {
+                                if (currentImage) {
+                                    currentImage.classList.remove('active');
+                                }
+                                newImage.classList.add('active');
+                                currentImage = newImage;
                             }
-                            newImage.classList.add('active');
-                            currentImage = newImage;
                         }
-                    }
-                });
-            },
-            { threshold: 0.6 } // The card is 60% in view
-        );
+                    });
+                },
+                { threshold: 0.6 } // The card is 60% in view
+            );
 
-        cards.forEach(card => {
-            observer.observe(card);
+            cards.forEach(card => {
+                observer.observe(card);
+            });
         });
-    });
+    }
 </script>
 
 </body>
