@@ -6,7 +6,7 @@
     <title>A Special Birthday for a Special Didi!</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -16,73 +16,92 @@
             scroll-behavior: smooth;
         }
 
-        /* --- Full Screen Story Sections --- */
-        .story-section {
+        /* --- Hero Section (Universal for all screens) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/didi-1.jpg');
+            background-attachment: fixed; /* Parallax effect */
+            background-position: center;
+            background-size: cover;
+        }
+        
+        /* The Aesthetic Main Wish Animation */
+        .main-wish-container {
+            transform: scale(0.8);
+            opacity: 0;
+            animation: reveal-wish 1.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+        }
+        .main-wish-container .greeting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: #FFD700;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 1px 1px 15px rgba(255, 215, 0, 0.5);
+        }
+        .main-wish-container .didi-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            margin: 0;
+            color: #ffffff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+        }
+        .main-wish-container .subtitle {
+            font-size: 1.1em;
+            margin-top: 1rem;
+        }
+
+        /* --- MOBILE-FIRST STYLES (Default) --- */
+        .card {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 2rem;
-            position: relative; /* Needed for the scroll arrow */
-            
-            /* The gorgeous parallax background effect */
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
             background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
+        #card1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/didi-2.jpg'); }
+        #card2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/family.jpg'); }
+        #card3 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/selfie.jpg'); }
 
-        /* --- Assigning Your Images to Each Section --- */
-        #hero {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/didi-1.jpg');
-        }
-        #card1 {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/didi-2.jpg');
-        }
-        #card2 {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/family.jpg');
-        }
-        #card3 {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/selfie.jpg');
-        }
-        #final {
-            background: linear-gradient(135deg, #414345, #232526);
-        }
+        .sticky-panel { display: none; } /* Sticky panel is hidden on mobile */
 
-        /* --- Content Styling --- */
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8em;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
-        }
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2em;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-        }
-        p {
-            font-size: 1.1em;
-            line-height: 1.8;
-            max-width: 500px;
-            text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
-        }
-        
-        /* The NEW "Aurora Glass" container for text */
+        /* --- Content Box Styling (Universal) --- */
         .content-box {
-            background: rgba(30, 30, 30, 0.4); /* Slightly darker glass */
+            background: rgba(30, 30, 30, 0.4);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 2.5rem; /* More padding */
+            padding: 2.5rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            position: relative; /* For the aurora effect */
-            overflow: hidden; /* Hide overflowing aurora */
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
-
-        /* The glowing aurora effect */
+        .card.visible .content-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .content-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            margin-bottom: 1rem;
+        }
+        .content-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 500px;
+        }
         .content-box::before {
             content: '';
             position: absolute;
@@ -91,109 +110,108 @@
             background: radial-gradient(circle, rgba(255, 69, 128, 0.15) 0%, rgba(36, 11, 54, 0) 70%);
             animation: rotate 20s linear infinite;
         }
-
-        /* --- STAGGERED ANIMATIONS for a premium feel --- */
-        .content-box, #hero h1, #hero p, .scroll-arrow {
-            opacity: 0;
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-        }
-        .story-section.visible .content-box,
-        .story-section.visible h1,
-        .story-section.visible p,
-        .story-section.visible .scroll-arrow {
-            opacity: 1;
-        }
-
-        .content-box h2, .content-box p {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s; /* Delay start */
-        }
-        .story-section.visible .content-box h2,
-        .story-section.visible .content-box p {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .story-section.visible .content-box p {
-            transition-delay: 0.6s; /* The paragraph appears slightly after the heading */
-        }
         
-        /* --- The Scroll Down Arrow --- */
-        .scroll-arrow {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 50px;
+        /* Final Message Section (Universal) */
+        .final-message {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #414345, #232526);
         }
-        .scroll-arrow::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            transform: translateX(-50%);
-            animation: scroll-pulse 2s infinite;
-        }
-
-        /* --- Final Message Styling --- */
-        #final .name {
+        .final-message .name {
             margin-top: 40px;
             font-size: 1.5em;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
         }
 
-        /* --- Keyframe Animations --- */
-        @keyframes scroll-pulse {
-            0% { transform: translate(-50%, 0); opacity: 0; }
-            40% { opacity: 1; }
-            80% { transform: translate(-50%, 10px); opacity: 0; }
-            100% { opacity: 0; }
+        /* ------------------------------------------------ */
+        /* --- DESKTOP STYLES (for screens > 992px) --- */
+        /* ------------------------------------------------ */
+        @media (min-width: 992px) {
+            .story-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Two equal columns */
+                gap: 2rem;
+                padding: 2rem;
+            }
+            .sticky-panel {
+                display: block; /* Show the sticky panel */
+                position: sticky;
+                top: 2rem;
+                height: calc(100vh - 4rem);
+                border-radius: 20px;
+                overflow: hidden;
+            }
+            .sticky-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                position: absolute;
+                opacity: 0;
+                transition: opacity 1s ease-in-out;
+            }
+            .sticky-image.active {
+                opacity: 1;
+            }
+            .card {
+                min-height: 100vh;
+                /* On desktop, cards have no background image */
+                background-image: none !important;
+            }
         }
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        
+        /* Animations */
+        @keyframes reveal-wish { to { transform: scale(1); opacity: 1; } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <section class="story-section" id="hero">
-        <h1>Happy Birthday, Didi!</h1>
-        <p>Celebrating a new year and a beautiful new beginning.</p>
-        <div class="scroll-arrow"></div>
-    </section>
-
-    <section class="story-section" id="card1">
-        <div class="content-box">
-            <h2>To The Mother-To-Be</h2>
-            <p>On your birthday, we're celebrating more than just you... we're celebrating the amazing mother you are about to become. You have a special glow that brightens every room.</p>
+    <section class="hero">
+        <div class="main-wish-container">
+            <p class="greeting">Happy Birthday</p>
+            <h1 class="didi-name">My Dearest Didi</h1>
+            <p class="subtitle">Celebrating a new year and your beautiful new beginning.</p>
         </div>
     </section>
 
-    <section class="story-section" id="card2">
-        <div class="content-box">
-            <h2>Our Family is Growing</h2>
-            <p>Our hearts are so full knowing that our family is growing. We absolutely cannot wait to welcome your little one into this wonderful circle of love.</p>
+    <div class="story-container">
+        <!-- The Sticky Image Panel (Only visible on Desktop) -->
+        <div class="sticky-panel">
+            <img src="images/didi-2.jpg" id="img-card1" class="sticky-image active" alt="Didi smiling">
+            <img src="images/family.jpg" id="img-card2" class="sticky-image" alt="Family together">
+            <img src="images/selfie.jpg" id="img-card3" class="sticky-image" alt="Sisters selfie">
         </div>
-    </section>
 
-    <section class="story-section" id="card3">
-        <div class="content-box">
-            <h2>A New Adventure</h2>
-            <p>I am so excited to be on this journey with you and to become the proudest Maasi/Aunt in the world! I'll be here for every step, every giggle, and every milestone.</p>
+        <!-- The Scrolling Text Panel -->
+        <div class="scroll-panel">
+            <div class="card" id="card1" data-image="img-card1">
+                <div class="content-box">
+                    <h2>To The Mother-To-Be</h2>
+                    <p>On your birthday, we're celebrating more than just you... we're celebrating the amazing mother you are about to become. You have a special glow that brightens every room.</p>
+                </div>
+            </div>
+            <div class="card" id="card2" data-image="img-card2">
+                <div class="content-box">
+                    <h2>Our Family is Growing</h2>
+                    <p>Our hearts are so full knowing that our family is growing. We absolutely cannot wait to welcome your little one into this wonderful circle of love.</p>
+                </div>
+            </div>
+            <div class="card" id="card3" data-image="img-card3">
+                <div class="content-box">
+                    <h2>A New Adventure</h2>
+                    <p>I am so excited to be on this journey with you and to become the proudest Maasi/Aunt in the world! I'll be here for every step, every giggle, and every milestone.</p>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <section class="story-section" id="final">
+    <section class="final-message">
         <h2>This year is extra special.</h2>
         <p>Wishing you a day of peace and joy, and a beautiful journey into motherhood.<br>You are going to be the most incredible mom.</p>
         <p class="name">With all my love,<br>Fultu</p>
@@ -201,22 +219,35 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const sections = document.querySelectorAll('.story-section');
+        // Observer for scroll animations
+        const cards = document.querySelectorAll('.card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+        cards.forEach(card => cardObserver.observe(card));
 
-        const observer = new IntersectionObserver(
-            (entries) => {
+        // Logic for the DESKTOP sticky image effect
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            let currentImage = document.querySelector('.sticky-image.active');
+            const stickyObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+                        const imageId = entry.target.getAttribute('data-image');
+                        const newImage = document.getElementById(imageId);
+                        if (newImage && newImage !== currentImage) {
+                            if(currentImage) currentImage.classList.remove('active');
+                            newImage.classList.add('active');
+                            currentImage = newImage;
+                        }
                     }
                 });
-            },
-            { threshold: 0.3 } 
-        );
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
+            }, { threshold: 0.6 });
+            cards.forEach(card => stickyObserver.observe(card));
+        }
     });
 </script>
 
