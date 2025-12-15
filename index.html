@@ -3,292 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Special Birthday for a Special Didi</title>
+<title>A Cinematic Birthday Wish</title>
 
+<!-- Preload key images for a flawless start -->
+<link rel="preload" as="image" href="images/didi-1.jpg">
+<link rel="preload" as="image" href="images/didi-2.jpg">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --ease:cubic-bezier(.25,1,.5,1);
-  --glass:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.05));
+  --ease:cubic-bezier(.22,1,.36,1);
+  --glass:linear-gradient(135deg,
+    rgba(255,255,255,.28),
+    rgba(255,255,255,.05)
+  );
 }
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  height:100%;
+  background:#0a0a0a;
   font-family:'Poppins',sans-serif;
-  background:#0b0b0b;
   color:#f5f5f5;
   overflow-x:hidden;
 }
 
-/* ===== AMBIENT ORBS ===== */
-.orb{
-  position:absolute;
-  width:300px;height:300px;
-  border-radius:50%;
-  filter:blur(90px);
-  opacity:.35;
-  animation:orbFloat 18s linear infinite;
-  z-index:-5;
-}
-.orb.pink{background:#ff6fb1;top:8%;left:-80px}
-.orb.gold{background:#ffd36f;bottom:15%;right:-120px;animation-delay:-6s}
-.orb.purple{background:#9b7bff;top:65%;left:20%;animation-delay:-12s}
-
-@keyframes orbFloat{
-  0%{transform:translate(0,0)}
-  50%{transform:translate(40px,-60px)}
-  100%{transform:translate(0,0)}
-}
-
-/* ===== SECTIONS ===== */
-.story-section{
-  min-height:100vh;
-  padding:1.4rem;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  position:relative;
+#stage{
+  position:fixed;
+  inset:0;
+  perspective:1600px;
   overflow:hidden;
-  perspective:1200px;
-}
-
-.bg-image{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  transform:scale(1.05);
-  transition:transform 3s ease;
-  z-index:-3;
-}
-.story-section.visible .bg-image{transform:scale(1)}
-
-.story-section::after{
-  content:"";
-  position:absolute;
-  inset:0;
   background:
-    radial-gradient(circle at top,rgba(255,120,200,.22),transparent 65%),
-    linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.85));
-  z-index:-2;
+    radial-gradient(circle at top,rgba(255,140,200,.18),transparent 60%),
+    linear-gradient(to bottom,#111,#000);
 }
 
-/* ===== HERO ===== */
-#hero .bg-image{background-image:url("images/didi-1.jpg")}
-
-.hero-content>*{
-  opacity:0;
-  transform:translateY(24px);
-  transition:all 1s var(--ease);
-}
-#hero.visible .hero-content>*{opacity:1;transform:none}
-#hero.visible .didi-name{transition-delay:.15s}
-#hero.visible .subtitle{transition-delay:.3s}
-
-.greeting{
-  font-family:'Dancing Script',cursive;
-  font-size:2.4em;
-  background:linear-gradient(90deg,#ffd700,#ffb347);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.didi-name{
-  font-family:'Playfair Display',serif;
-  font-size:2.9em;
-  margin:.3em 0;
-  text-shadow:0 10px 30px rgba(0,0,0,.6);
-}
-.subtitle{font-size:.95em;opacity:.9}
-
-.scroll-hint{
-  position:absolute;
-  bottom:28px;
-  font-size:.85em;
-  opacity:0;
-  animation:float 2s infinite 2.5s;
-  transition:opacity 1s ease 2s;
-}
-#hero.visible .scroll-hint{opacity:.6}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(6px)}
-}
-
-/* ===== GLASS CARD ===== */
-#card1 .bg-image{background-image:url("images/didi-2.jpg")}
-#card2 .bg-image{background-image:url("images/family.jpg")}
-#card3 .bg-image{background-image:url("images/selfie.jpg")}
-
-.glass-box{
-  width:100%;
-  max-width:380px;
-  border-radius:24px;
-  background:var(--glass);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:0 30px 60px rgba(0,0,0,.55);
-  transform-style:preserve-3d;
-  transition:transform .25s ease, box-shadow .25s ease;
-  position:relative;
-  overflow:hidden;
-}
-
-.glass-box::before{
+#stage::after{
   content:"";
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at var(--x,50%) var(--y,50%),
-    rgba(255,255,255,.35),
-    transparent 60%);
-  opacity:0;
-  transition:opacity .3s ease;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='1'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
   pointer-events:none;
 }
-.glass-box.active::before{opacity:.45}
 
-.glass-inner{
+.scene{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+  transition: transform 0.3s ease-out; /* For gaze effect */
+}
+
+/* NEW: Background Image Planes */
+.bg-plane {
+    position: absolute;
+    inset: -20%; /* Slightly larger to avoid edges showing */
+    background-size: cover;
+    background-position: center;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+.bg-plane::after { /* Gradient overlay */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.8));
+}
+
+#bg0 { background-image: url('images/didi-1.jpg'); }
+#bg1 { background-image: url('images/didi-2.jpg'); }
+#bg2 { background-image: url('images/family.jpg'); }
+#bg3 { background-image: url('images/selfie.jpg'); }
+#bg4 { background-color: #0c0c0c; } /* Final card background */
+
+.card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(86vw,380px);
   padding:1.9rem;
-  position:relative;
-  z-index:1;
-}
-
-h2{
-  font-family:'Playfair Display',serif;
-  font-size:1.65em;
-  margin-bottom:.6em;
-}
-p{font-size:.95em;line-height:1.65}
-
-/* ===== FINAL ===== */
-.final-message{background:linear-gradient(135deg,#1a1a1a,#0c0c0c)}
-.final-message-content>*{
+  border-radius:26px;
+  background:var(--glass);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow: 0 40px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.1);
+  transform-style:preserve-3d;
   opacity:0;
-  transform:translateY(20px);
-  transition:all 1s var(--ease);
-}
-.story-section.visible .final-message-content>*{opacity:1;transform:none}
-.story-section.visible .final-message-content p{transition-delay:.2s}
-.story-section.visible .final-message-content .name{transition-delay:.4s}
-
-.name{
-  margin-top:40px;
-  font-family:'Playfair Display',serif;
+  will-change: transform, opacity;
 }
 
-/* ===== DESKTOP ===== */
-@media(min-width:992px){
-  .glass-box{max-width:450px}
-  .didi-name{font-size:3.6em}
-  .greeting{font-size:2.9em}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.35),transparent 70%);
+  opacity:.15;
+  pointer-events:none;
+}
+
+h1,h2{ font-family:'Playfair Display',serif; margin-bottom:.5rem; }
+h1{font-size:2.2em}
+h2{font-size:1.6em}
+p{font-size:.95em;line-height:1.65}
+.greeting{ font-family:'Dancing Script',cursive; font-size:2.4em; background:linear-gradient(90deg,#ffd700,#ffb347); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.name{ margin-top:1.5rem; font-family:'Playfair Display',serif; }
+
+#scroll-space{ height:500vh; /* Increased for better pacing */ }
+
+@media(max-width:768px){
+  h1{font-size:2em}
+  .greeting{font-size:2.1em}
+  p{font-size:.92em}
 }
 </style>
 </head>
 
 <body>
 
-<div class="orb pink"></div>
-<div class="orb gold"></div>
-<div class="orb purple"></div>
-
-<section class="story-section" id="hero">
-  <div class="bg-image"></div>
-  <div class="hero-content">
-    <p class="greeting">Happy Birthday</p>
-    <h1 class="didi-name">My Dearest Didi</h1>
-    <p class="subtitle">Celebrating a new year and your beautiful new beginning.</p>
-  </div>
-  <div class="scroll-hint">Swipe ↓</div>
-</section>
-
-<section class="story-section" id="card1">
-  <div class="bg-image"></div>
-  <div class="glass-box">
-    <div class="glass-inner">
+<div id="stage">
+  <div class="scene">
+    <!-- Background Planes -->
+    <div class="bg-plane" id="bg0" data-index="0"></div>
+    <div class="bg-plane" id="bg1" data-index="1"></div>
+    <div class="bg-plane" id="bg2" data-index="2"></div>
+    <div class="bg-plane" id="bg3" data-index="3"></div>
+    <div class="bg-plane" id="bg4" data-index="4"></div>
+      
+    <!-- Glass Cards -->
+    <div class="card" data-index="0">
+      <p class="greeting">Happy Birthday</p>
+      <h1>My Dearest Didi</h1>
+      <p>This year is not just another birthday… it’s the beginning of a beautiful new life chapter.</p>
+    </div>
+    <div class="card" data-index="1">
       <h2>To The Mother-To-Be</h2>
-      <p>This birthday marks the beginning of the most beautiful role of your life.</p>
+      <p>You are about to experience the purest form of love this world can offer.</p>
     </div>
-  </div>
-</section>
-
-<section class="story-section" id="card2">
-  <div class="bg-image"></div>
-  <div class="glass-box">
-    <div class="glass-inner">
+    <div class="card" data-index="2">
       <h2>Our Family Is Growing</h2>
-      <p>Our hearts are full knowing a new little soul is joining our world.</p>
+      <p>A tiny heartbeat is already filling our hearts with endless joy.</p>
+    </div>
+    <div class="card" data-index="3">
+      <h2>A New Adventure Begins</h2>
+      <p>I promise to stand by you for every smile, every tear, and every beautiful memory.</p>
+    </div>
+    <div class="card" data-index="4">
+      <h2>This Year Is Extra Special</h2>
+      <p>May your days be filled with peace, strength, and unconditional love.</p>
+      <p class="name">With all my love,<br>Fultu</p>
     </div>
   </div>
-</section>
+</div>
 
-<section class="story-section" id="card3">
-  <div class="bg-image"></div>
-  <div class="glass-box">
-    <div class="glass-inner">
-      <h2>A New Adventure</h2>
-      <p>I’ll be there for every smile, every step, and every memory ahead.</p>
-    </div>
-  </div>
-</section>
-
-<section class="story-section final-message">
-  <div class="final-message-content">
-    <h2>This year is extra special.</h2>
-    <p>Wishing you peace, joy, and a beautiful journey into motherhood.</p>
-    <p class="name">With all my love,<br>Fultu</p>
-  </div>
-</section>
+<div id="scroll-space"></div>
 
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
+(() => {
+  const cards = document.querySelectorAll(".card");
+  const backgrounds = document.querySelectorAll(".bg-plane");
+  const stage = document.getElementById("stage");
+  const scene = document.querySelector(".scene");
+  const total = cards.length;
 
-  /* reveal */
-  const sections=document.querySelectorAll(".story-section");
-  const observer=new IntersectionObserver(e=>{
-    e.forEach(x=>x.isIntersecting&&x.target.classList.add("visible"))
-  },{threshold:.12});
-  sections.forEach(s=>observer.observe(s));
+  function animate(){
+    const maxScroll = document.body.scrollHeight - innerHeight;
+    const progress = window.scrollY / maxScroll;
 
-  /* 3D TOUCH EFFECT */
-  document.querySelectorAll(".glass-box").forEach(card=>{
-    const rect=()=>card.getBoundingClientRect();
+    // Dolly Zoom Effect
+    const perspective = 1600 - Math.min(1, progress * 4) * 600;
+    stage.style.perspective = `${perspective}px`;
 
-    const move=(x,y)=>{
-      const r=rect();
-      const dx=(x-r.left)/r.width-.5;
-      const dy=(y-r.top)/r.height-.5;
+    // Animate Cards and Backgrounds
+    for(let i=0; i < total; i++){
+        const card = cards[i];
+        const bg = backgrounds[i];
+        const phase = progress * total - i;
+        const v = Math.max(-1,Math.min(1,phase));
 
-      card.style.transform=
-        `rotateX(${-dy*16}deg) rotateY(${dx*18}deg) scale(1.03)`;
-      card.style.boxShadow="0 45px 80px rgba(0,0,0,.7)";
-      card.style.setProperty("--x",`${x-r.left}px`);
-      card.style.setProperty("--y",`${y-r.top}px`);
-      card.classList.add("active");
-    };
+        const cardZ = -1200 + v * 1200;
+        const rotateY = v * 18;
+        const rotateX = -v * 6;
+        const scale = 1 - Math.abs(v) * .15;
+        const opacity = 1 - Math.abs(v);
+        
+        card.style.transform = `translate(-50%,-50%) translateZ(${cardZ}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(${scale})`;
+        card.style.opacity = opacity;
+        
+        // Backgrounds are further back and move slower
+        const bgZ = -4000 + v * 2000;
+        const bgOpacity = 1 - Math.abs(v) * 0.8;
+        bg.style.transform = `translateZ(${bgZ}px)`;
+        bg.style.opacity = bgOpacity;
+    }
 
-    const reset=()=>{
-      card.style.transform="";
-      card.style.boxShadow="";
-      card.classList.remove("active");
-    };
+    requestAnimationFrame(animate);
+  }
 
-    card.addEventListener("mousemove",e=>move(e.clientX,e.clientY));
-    card.addEventListener("touchmove",e=>{
-      const t=e.touches[0];
-      move(t.clientX,t.clientY);
-    },{passive:true});
-
-    card.addEventListener("mouseleave",reset);
-    card.addEventListener("touchend",reset);
-  });
-
-});
+  // Gaze Effect
+  const handleGaze = (e) => {
+      const { clientX, clientY } = e;
+      const x = (clientX / innerWidth - 0.5) * 2;
+      const y = (clientY / innerHeight - 0.5) * 2;
+      scene.style.transform = `rotateY(${x * 3}deg) rotateX(${-y * 3}deg)`;
+  };
+  window.addEventListener('mousemove', handleGaze);
+  
+  animate();
+})();
 </script>
 
 </body>
