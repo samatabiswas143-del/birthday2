@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Special Birthday for a Special Didi</title>
 
-<!-- Preload key images for a faster, more polished first impression -->
-<link rel="preload" as="image" href="images/didi-1.jpg">
-<link rel="preload" as="image" href="images/didi-2.jpg">
-
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -16,10 +13,7 @@
 <style>
 :root{
   --ease:cubic-bezier(.25,1,.5,1);
-  --glass-grad:linear-gradient(135deg,
-      rgba(255,255,255,.18),
-      rgba(255,255,255,.05)
-  );
+  --glass:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.05));
 }
 
 *{box-sizing:border-box}
@@ -31,7 +25,27 @@ body{
   overflow-x:hidden;
 }
 
-/* ================= SECTIONS ================= */
+/* ===== AMBIENT ORBS ===== */
+.orb{
+  position:absolute;
+  width:280px;height:280px;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.35;
+  animation:orbFloat 18s linear infinite;
+  z-index:-5;
+}
+.orb.pink{background:#ff6fb1;top:10%;left:-80px}
+.orb.gold{background:#ffd36f;bottom:15%;right:-100px;animation-delay:-6s}
+.orb.purple{background:#9b7bff;top:65%;left:20%;animation-delay:-12s}
+
+@keyframes orbFloat{
+  0%{transform:translate(0,0)}
+  50%{transform:translate(40px,-60px)}
+  100%{transform:translate(0,0)}
+}
+
+/* ===== SECTIONS ===== */
 .story-section{
   min-height:100vh;
   padding:1.4rem;
@@ -41,6 +55,7 @@ body{
   text-align:center;
   position:relative;
   overflow:hidden;
+  perspective:1000px;
 }
 
 .bg-image{
@@ -48,33 +63,31 @@ body{
   inset:0;
   background-size:cover;
   background-position:center;
+  transform:scale(1.05);
+  transition:transform 2.8s ease;
   z-index:-3;
-  transform:scale(1.08);
-  transition:transform 3.5s ease-out; /* Slightly faster zoom */
-  will-change:transform;
 }
-.story-section.visible .bg-image{ transform:scale(1); }
+.story-section.visible .bg-image{transform:scale(1)}
 
 .story-section::after{
   content:"";
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at top, rgba(255,120,200,.18), transparent 65%),
-    linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.8));
+    radial-gradient(circle at top,rgba(255,120,200,.2),transparent 65%),
+    linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.85));
   z-index:-2;
 }
 
-/* ================= HERO ================= */
-#hero .bg-image{ background-image:url("images/didi-1.jpg"); }
+/* ===== HERO ===== */
+#hero .bg-image{background-image:url("images/didi-1.jpg")}
 
 .hero-content>*{
   opacity:0;
-  transform:translateY(25px);
+  transform:translateY(24px);
   transition:all 1s var(--ease);
-  will-change: transform, opacity;
 }
-#hero.visible .hero-content>*{ opacity:1; transform:none; }
+#hero.visible .hero-content>*{opacity:1;transform:none}
 #hero.visible .didi-name{transition-delay:.15s}
 #hero.visible .subtitle{transition-delay:.3s}
 
@@ -87,30 +100,28 @@ body{
 }
 .didi-name{
   font-family:'Playfair Display',serif;
-  font-size:2.8em;
+  font-size:2.9em;
   margin:.3em 0;
-  text-shadow:0 8px 30px rgba(0,0,0,.6);
+  text-shadow:0 10px 30px rgba(0,0,0,.6);
 }
-.subtitle{ opacity:.9; font-size:.95em; }
+.subtitle{font-size:.95em;opacity:.9}
 
 .scroll-hint{
   position:absolute;
   bottom:28px;
   font-size:.85em;
   opacity:0;
-  animation:float 2.2s infinite 2.5s;
-  transition: opacity 1s ease 2s;
+  animation:float 2s infinite 2.5s;
+  transition:opacity 1s ease 2s;
 }
-#hero.visible .scroll-hint { opacity: .6; }
-.scroll-hint.hidden { opacity: 0; transition: opacity 0.5s ease; }
+#hero.visible .scroll-hint{opacity:.6}
 
 @keyframes float{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(6px)}
 }
 
-/* ================= GLASS CARD ================= */
-.card .bg-image{filter:saturate(1.05) brightness(.95)}
+/* ===== CARDS ===== */
 #card1 .bg-image{background-image:url("images/didi-2.jpg")}
 #card2 .bg-image{background-image:url("images/family.jpg")}
 #card3 .bg-image{background-image:url("images/selfie.jpg")}
@@ -119,76 +130,87 @@ body{
   width:100%;
   max-width:380px;
   border-radius:22px;
-  background:var(--glass-grad);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(255,255,255,.25);
-  box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+  box-shadow:0 30px 60px rgba(0,0,0,.55);
+  overflow:hidden;
+  will-change:transform,opacity;
+}
+
+.glass-box::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:22px;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);
   opacity:0;
-  transform:translateY(40px) scale(.96);
-  transition:all 1s var(--ease);
+  transition:opacity .6s ease;
+}
+
+.glass-box.active::after{opacity:.35}
+
+.glass-inner{
+  padding:1.9rem;
+  position:relative;
+  z-index:1;
+}
+
+h2{
+  font-family:'Playfair Display',serif;
+  font-size:1.65em;
+  margin-bottom:.6em;
   position:relative;
   overflow:hidden;
-  transform-style: preserve-3d; /* For tilt effect */
-  will-change: transform, opacity;
-}
-.story-section.visible .glass-box{ opacity:1; transform:none; }
-
-/* NEW: Aurora Glow Effect */
-.glass-box::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 105, 180, 0.2), transparent 40%);
-    animation: aurora-glow 15s linear infinite alternate;
-    z-index: -1;
-    transition: opacity 1s ease;
-    opacity: 0;
-}
-.story-section.visible .glass-box::after { opacity: 1; }
-@keyframes aurora-glow {
-    0% { --x: 20%; --y: 20%; }
-    100% { --x: 80%; --y: 80%; }
 }
 
-.glass-inner{ padding:1.9rem; position:relative; z-index:1; }
-
-.glass-inner>*{
-  opacity:0;
-  transform:translateY(18px);
-  transition:all .8s var(--ease);
-  will-change: transform, opacity;
+h2::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:translateX(-120%);
+  animation:shine 2.6s ease forwards;
 }
-.story-section.visible .glass-inner>*{ opacity:1; transform:none; }
-.story-section.visible .glass-inner h2{transition-delay:.3s}
-.story-section.visible .glass-inner p{transition-delay:.45s}
 
-h2{ font-family:'Playfair Display',serif; font-size:1.65em; margin-bottom:.6em; }
-p{ font-size:.95em; line-height:1.65; }
+@keyframes shine{
+  to{transform:translateX(120%)}
+}
 
-/* ================= FINAL ================= */
-.final-message{ background:linear-gradient(135deg,#1a1a1a,#0c0c0c); }
+p{font-size:.95em;line-height:1.65}
+
+/* ===== FINAL ===== */
+.final-message{background:linear-gradient(135deg,#1a1a1a,#0c0c0c)}
 .final-message-content>*{
   opacity:0;
   transform:translateY(20px);
   transition:all 1s var(--ease);
-  will-change: transform, opacity;
 }
-.story-section.visible .final-message-content>*{ opacity:1; transform:none; }
-.story-section.visible .final-message-content > p { transition-delay: .2s; }
-.story-section.visible .final-message-content > .name { transition-delay: .4s; }
+.story-section.visible .final-message-content>*{opacity:1;transform:none}
+.story-section.visible .final-message-content p{transition-delay:.2s}
+.story-section.visible .final-message-content .name{transition-delay:.4s}
 
-.name{ margin-top:40px; font-family:'Playfair Display',serif; }
+.name{
+  margin-top:40px;
+  font-family:'Playfair Display',serif;
+}
 
-/* ================= DESKTOP ================= */
+/* ===== DESKTOP ===== */
 @media(min-width:992px){
   .glass-box{max-width:450px}
   .didi-name{font-size:3.6em}
-  .greeting{font-size: 2.8em;}
+  .greeting{font-size:2.9em}
 }
 </style>
 </head>
 
 <body>
+
+<!-- Ambient Orbs -->
+<div class="orb pink"></div>
+<div class="orb gold"></div>
+<div class="orb purple"></div>
 
 <section class="story-section" id="hero">
   <div class="bg-image"></div>
@@ -197,10 +219,10 @@ p{ font-size:.95em; line-height:1.65; }
     <h1 class="didi-name">My Dearest Didi</h1>
     <p class="subtitle">Celebrating a new year and your beautiful new beginning.</p>
   </div>
-  <div class="scroll-hint" id="scroll-hint">Swipe ↓</div>
+  <div class="scroll-hint">Swipe ↓</div>
 </section>
 
-<section class="story-section card" id="card1">
+<section class="story-section" id="card1">
   <div class="bg-image"></div>
   <div class="glass-box">
     <div class="glass-inner">
@@ -210,7 +232,7 @@ p{ font-size:.95em; line-height:1.65; }
   </div>
 </section>
 
-<section class="story-section card" id="card2">
+<section class="story-section" id="card2">
   <div class="bg-image"></div>
   <div class="glass-box">
     <div class="glass-inner">
@@ -220,7 +242,7 @@ p{ font-size:.95em; line-height:1.65; }
   </div>
 </section>
 
-<section class="story-section card" id="card3">
+<section class="story-section" id="card3">
   <div class="bg-image"></div>
   <div class="glass-box">
     <div class="glass-inner">
@@ -240,58 +262,29 @@ p{ font-size:.95em; line-height:1.65; }
 
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
-  // --- Animation Observer ---
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting) e.target.classList.add("visible");
-    });
-  },{threshold:.2,rootMargin:"0px 0px -80px 0px"});
+  const sections=document.querySelectorAll(".story-section");
+  const cards=document.querySelectorAll(".glass-box");
+  const observer=new IntersectionObserver(e=>{
+    e.forEach(x=>x.isIntersecting&&x.target.classList.add("visible"))
+  },{threshold:.12});
+  sections.forEach(s=>observer.observe(s));
 
-  document.querySelectorAll(".story-section")
-    .forEach(s=>observer.observe(s));
-    
-  // --- Fade out scroll hint ---
-  const scrollHint = document.getElementById('scroll-hint');
-  window.addEventListener('scroll', () => {
-    scrollHint.classList.add('hidden');
-  }, { once: true });
-  
-  // --- Interactive Tilt Effect ---
-  const cards = document.querySelectorAll('.glass-box');
-
-  const tilt = (e, el) => {
-    const { clientX, clientY } = e;
-    const { top, left, width, height } = el.getBoundingClientRect();
-    const x = ((clientX - left) / width - 0.5) * 2;
-    const y = ((clientY - top) / height - 0.5) * 2;
-    el.style.setProperty('--x', `${x * 15}px`);
-    el.style.setProperty('--y', `${y * 15}px`);
-    el.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
-  };
-
-  const resetTilt = (e) => {
-    e.currentTarget.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
-  };
-  
-  // Gyroscope for Mobile
-  const handleOrientation = (e) => {
-    const { beta, gamma } = e; // beta: X-axis, gamma: Y-axis
-    cards.forEach(card => {
-        const y = beta / 45; // Normalize
-        const x = gamma / 45;
-        card.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.02)`;
+  const center=()=>window.innerHeight/2;
+  const update=()=>{
+    cards.forEach(c=>{
+      const r=c.getBoundingClientRect();
+      const p=(r.top+r.height/2-center())/center();
+      const v=Math.max(-1,Math.min(1,p));
+      c.style.transform=`perspective(1000px) rotateY(${v*18}deg) scale(${1-Math.abs(v)*.15})`;
+      c.style.opacity=1-Math.abs(v)*.4;
+      c.classList.toggle("active",Math.abs(v)<.25);
     });
   };
-
-  if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
-      window.addEventListener('deviceorientation', handleOrientation);
-  } else {
-    // Mouse move for Desktop
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => tilt(e, card));
-        card.addEventListener('mouseleave', resetTilt);
-    });
-  }
+  let t=false;
+  window.addEventListener("scroll",()=>{
+    if(!t){requestAnimationFrame(()=>{update();t=false});t=true}
+  });
+  update();
 });
 </script>
 
